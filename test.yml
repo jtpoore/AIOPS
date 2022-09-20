@@ -1,13 +1,33 @@
-- name: VMWare tasks
+---
+#
+# This playbook raise cpu number for a VM
+#
+- name: Raise cpu number for a VM
   hosts: localhost
-  connection: local
   gather_facts: no
-  vars:
-    vcenter_ip: '172.16.64.140'
-    vmname: 'AIOP-VA-AAP-CN3'
+  
   tasks:
-  - name: Dedicate one core to the VM
-    vmware.vmware_rest.vcenter_vm_hardware_cpu:
-    vm: '{{ vmname }}'
-    count: 8
-    register: _result
+  - name: "Get VM info"
+    community.vmware.vmware_guest_info:
+      hostname: "172.16.64.140"
+      validate_certs: False
+      name: "AIOP-VA-AAP-CN3"
+    register: vm_info
+    delegate_to: localhost
+    connection: local
+
+  - name: "Raise cpu number for a VM"
+    community.vmware.vmware_guest:
+      hostname: "172.16.64.140"
+      validate_certs: False
+      uuid: "{{ vm_info.instance.hw_product_uuid }}"
+      hardware:
+        num_cpus: "8"
+    when: (cpu_number|int) > vm_info.instance.hw_processor_count
+    delegate_to: "localhost"
+    connection: local
+
+  - name: "Requested number of CPUs should be grater than existent"
+    debug:
+      msg: "Requested number of CPUs should be grater than existent ( {{ (cpu_number|int) }} <= {{ vm_info.instance.hw_processor_count }} !)"
+    when: (cpu_number|int) <= vm_info.instance.hw_processor_count
