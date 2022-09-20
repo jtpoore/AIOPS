@@ -1,0 +1,18 @@
+- name: VMWare tasks
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    vcenter_ip: '172.16.64.140'
+    vcenter_user: 'jpoore-adm'
+    vcenter_password: 'PsPLtP20122013$1!'
+    vmname: "AIOP-VA-AAP-CN3"
+  tasks:
+    - name: ForcePowerOn
+      vmware_guest_powerstate:
+        hostname: "{{ vcenter_ip }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_password }}"
+        name: "{{ vmname }}"
+        validate_certs: False
+        state: powered-on
