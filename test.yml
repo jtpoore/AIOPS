@@ -7,21 +7,12 @@
   gather_facts: no
   
   tasks:
-  - name: "Get VM info"
-    community.vmware.vmware_guest_info:
-      hostname: "172.16.64.140"
-      validate_certs: False
-      datacenter: "DS3-DC"
-      name: "AIOP-VA-AAP-CN3"
-    register: vm_info
-    delegate_to: localhost
-    connection: local
-
+  
   - name: "Raise cpu number for a VM"
     community.vmware.vmware_guest:
       hostname: "172.16.64.140"
       validate_certs: False
-      uuid: "{{ vm_info.instance.hw_product_uuid }}"
+      uuid: "{{ 4202ae54-1011-1407-3a0f-b535fe2f2fee }}"
       hardware:
         num_cpus: "8"
     when: (cpu_number|int) > vm_info.instance.hw_processor_count
