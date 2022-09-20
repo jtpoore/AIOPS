@@ -2,17 +2,13 @@ hosts: localhost
   connection: local
   gather_facts: no
   vars:
-    vcenter_ip: 'VCENTERIP'
-    vcenter_user: 'VCENTERUSER'
-    vcenter_password: 'VCENTERPASS'
-    vmname: 'VMNAME'
+    vcenter_ip: '172.16.64.140'
+    vmname: 'AIOP-VA-AAP-CN3'
   tasks:
     - name: Wait for the virtual machine to shutdown
       vmware_guest_powerstate:
         hostname: "{{ vcenter_ip }}"
-        username: "{{ vcenter_user }}"
-        password: "{{ vcenter_password }}"
-        name: "AIOP-VA-AAP-CN3"
+        name: "{{ vmname }}"
         validate_certs: False
         state: shutdown-guest
         state_change_timeout: 900
@@ -22,8 +18,6 @@ hosts: localhost
     - name: ForcePoweroff 
       vmware_guest_powerstate:
         hostname: "{{ vcenter_ip }}"
-        username: "{{ vcenter_user }}"
-        password: "{{ vcenter_password }}"
         name: "{{ vmname }}"
         validate_certs: False
         state: powered-off
