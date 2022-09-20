@@ -12,7 +12,7 @@
     community.vmware.vmware_guest:
       hostname: "172.16.64.140"
       validate_certs: False
-      name: "AIOP-VA-AAP-CN3"
+      name: "{{ vm_name }}"
       hardware:
         num_cpu_cores_per_socket: "1"
         num_cpus: "8"
