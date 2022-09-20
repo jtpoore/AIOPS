@@ -12,14 +12,9 @@
     community.vmware.vmware_guest:
       hostname: "172.16.64.140"
       validate_certs: False
-      uuid: "{{ 4202ae54-1011-1407-3a0f-b535fe2f2fee }}"
+      name: "AIOP-VA-AAP-CN3"
       hardware:
+        num_cpu_cores_per_socket: "1"
         num_cpus: "8"
-    when: (cpu_number|int) > vm_info.instance.hw_processor_count
-    delegate_to: "localhost"
-    connection: local
-
-  - name: "Requested number of CPUs should be grater than existent"
-    debug:
-      msg: "Requested number of CPUs should be grater than existent ( {{ (cpu_number|int) }} <= {{ vm_info.instance.hw_processor_count }} !)"
-    when: (cpu_number|int) <= vm_info.instance.hw_processor_count
+        hotadd_cpu: "yes"
+    
