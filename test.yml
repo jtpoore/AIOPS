@@ -1,9 +1,0 @@
----
-name: Set powerstate of a virtual machine to poweroff by using UUID
-  community.vmware.vmware_guest:
-    hostname: "{{ iic-col-vct-v01.iic.csra.nat }}"
-    username: "{{ jpoore-adm }}"
-    password: "{{ PsPLtP20122013$1! }}"
-    uuid: "{{ 5002f7b6-0e4d-192b-51df-fc4262d9e724 }}"
-    state: poweredon
-  delegate_to: localhost
