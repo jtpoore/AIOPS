@@ -1,0 +1,7 @@
+---
+
+collections:
+  # Install a collection from Ansible Galaxy.
+  - name: vmware.vmware_rest
+    version: 2.2.0
+    source: https://galaxy.ansible.com
