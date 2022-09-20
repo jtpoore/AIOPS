@@ -1,8 +1,8 @@
 ---
 #
-# This playbook take snapshot from VM
+# This playbook raise cpu number for a VM
 #
-- name: Take snapshot from VM
+- name: Raise cpu number for a VM
   hosts: localhost
   gather_facts: no
 
@@ -27,20 +27,37 @@
       prompt: VM Name
       private: no
 
-    - name: snapshot_name
-      prompt: Snapshot name
+    - name: cpu_number
+      prompt: Number of CPUs
       private: no
 
   tasks:
-  - name: Take snapshot from VM
-    community.vmware.vmware_guest_snapshot:
+  - name: "Get VM info"
+    community.vmware.vmware_guest_info:
       hostname: "{{ vcenter_ip }}"
       username: "{{ vcenter_username }}"
       password: "{{ vcenter_password }}"
       validate_certs: False
       datacenter: "{{ datacenter }}"
       name: "{{ vm_name }}"
-      state: present
-      snapshot_name: "{{ snapshot_name }}"
+    register: vm_info
     delegate_to: localhost
     connection: local
+
+  - name: "Raise cpu number for a VM"
+    community.vmware.vmware_guest:
+      hostname: "{{ vcenter_ip }}"
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      validate_certs: False
+      uuid: "{{ vm_info.instance.hw_product_uuid }}"
+      hardware:
+        num_cpus: "{{ cpu_number|int }}"
+    when: (cpu_number|int) > vm_info.instance.hw_processor_count
+    delegate_to: "localhost"
+    connection: local
+
+  - name: "Requested number of CPUs should be grater than existent"
+    debug:
+      msg: "Requested number of CPUs should be grater than existent ( {{ (cpu_number|int) }} <= {{ vm_info.instance.hw_processor_count }} !)"
+    when: (cpu_number|int) <= vm_info.instance.hw_processor_count
