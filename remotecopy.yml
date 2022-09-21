@@ -1,0 +1,11 @@
+---
+ - hosts: VMWare Environment
+   tasks:
+     - name: Fetch the file from source to master
+       run_once: yes
+       fetch: src=/home/ansible/test/test.conf dest=buffer/ flat=yes
+       when: "{{ inventory_hostname == '172.21.142.155' }}"
+
+     - name: Copy the file from master to destination
+       copy: src=buffer/app01-to-app02.jar dest=/tmp/
+       when: "{{ inventory_hostname == '172.21.142.151' }}"
