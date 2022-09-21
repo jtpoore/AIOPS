@@ -1,5 +1,5 @@
 ---
- - hosts: VMWare Environment
+ - hosts: 172.21.142.151 172.21.142.155
    tasks:
      - name: Fetch the file from source to master
        run_once: yes
