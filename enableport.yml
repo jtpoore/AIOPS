@@ -1,7 +1,9 @@
 ---
-- name: Permit traffic on provided port
-    host: 172.21.142.155
-    
+- name: Open Firewall Port
+  hosts: "{{ hostname}}"
+
+  tasks:
+  - name: Permit traffic on provided port
     ansible.posix.firewalld:
     port: "{{ port_protocol }}"
     permanent: yes
