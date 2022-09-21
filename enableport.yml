@@ -4,5 +4,6 @@
   tasks:
   - name: Copy file
     ansible.builtin.template:
+      remote_src: yes
       src: /home/ansible/test.conf
       dest: /home/ansible/testing/test.conf
