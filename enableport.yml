@@ -1,7 +1,8 @@
+---
 - hosts: " {{ ip_address }} "
   tasks:
   - name: Enable Firewall Port
-    ansible.posix.firewalld:
+   ansible.posix.firewalld:
     port: 161-162/udp
     permanent: yes
     state: enabled
