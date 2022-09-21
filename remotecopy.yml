@@ -1,11 +1,8 @@
 ---
- - hosts: 172.21.142.151 172.21.142.155
-   tasks:
-     - name: Fetch the file from source to master
-       run_once: yes
-       fetch: src=/home/ansible/test/test.conf dest=buffer/ flat=yes
-       when: "{{ inventory_hostname == '172.21.142.155' }}"
-
-     - name: Copy the file from master to destination
-       copy: src=buffer/test.conf dest=/tmp/
-       when: "{{ inventory_hostname == '172.21.142.151' }}"
+- hosts: 172.21.142.155
+  tasks:
+  - name: Ansible copy files remote to remote
+    copy:
+      src: /home/ansible/test.conf
+      dest: /home/ansible/testing
+      remote_src: yes
