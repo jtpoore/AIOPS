@@ -1,12 +1,7 @@
-- name: Update web servers
-  hosts: 172.21.142.155
-  remote_user: root
+- name: Copy File
+  hosts: 172.21.142.151
 
   tasks:
-  - name: Ensure apache is at the latest version
-    ansible.builtin.yum:
-      name: httpd
-      state: latest
   - name: Copy file
     ansible.builtin.template:
       src: /home/ansible/test.conf
