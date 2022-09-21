@@ -1,5 +1,5 @@
 - name: Update web servers
-  hosts: webservers
+  hosts: 172.21.142.155
   remote_user: root
 
   tasks:
