@@ -1,6 +1,7 @@
 ---
 - name: Permit traffic on provided port
     hosts: "{{ vm_name }}"
+    
     ansible.posix.firewalld:
     port: "{{ port_protocol }}"
     permanent: yes
