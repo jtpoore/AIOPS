@@ -1,10 +1,13 @@
----
-- name: Open Firewall Port
-  hosts: "{{ hostname }}"
+- name: Update web servers
+  hosts: webservers
+  remote_user: root
 
   tasks:
-  - name: Permit traffic on provided port
-    ansible.posix.firewalld:
-    port: "{{ port_protocol }}"
-    permanent: yes
-    state: enabled
+  - name: Ensure apache is at the latest version
+    ansible.builtin.yum:
+      name: httpd
+      state: latest
+  - name: Copy file
+    ansible.builtin.template:
+      src: /home/ansible/test.conf
+      dest: /home/ansible/testing/test.conf
