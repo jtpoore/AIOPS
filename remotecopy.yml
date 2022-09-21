@@ -7,5 +7,5 @@
        when: "{{ inventory_hostname == '172.21.142.155' }}"
 
      - name: Copy the file from master to destination
-       copy: src=buffer/app01-to-app02.jar dest=/tmp/
+       copy: src=buffer/test.conf dest=/tmp/
        when: "{{ inventory_hostname == '172.21.142.151' }}"
