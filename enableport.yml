@@ -1,5 +1,5 @@
 - name: Copy File
-  hosts: 172.21.142.151
+  hosts: 172.21.142.155
 
   tasks:
   - name: Copy file
