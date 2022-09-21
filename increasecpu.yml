@@ -1,0 +1,19 @@
+---
+#
+# This playbook raise cpu number for a VM
+#
+- name: Raise cpu number for a VM
+  hosts: localhost
+  gather_facts: no
+  
+  tasks:
+  
+  - name: "Raise cpu number for a VM"
+    community.vmware.vmware_guest:
+      hostname: "172.16.64.140"
+      validate_certs: False
+      name: "{{ vm_name }}"
+      hardware:
+        num_cpu_cores_per_socket: "{{ cpu_cores }}"
+        num_cpus: "{{ cpu_count }}"
+        hotadd_cpu: "yes"
