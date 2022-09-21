@@ -1,5 +1,5 @@
 - name: Update web servers
-  hosts: AIOP-VA-NFS-V01
+  hosts: 172.21.142.155
   remote_user: root
 
   tasks:
