@@ -1,6 +1,6 @@
 ---
 - name: Open Firewall Port
-  hosts: "{{ hostname}}"
+  hosts: "{{ hostname }}"
 
   tasks:
   - name: Permit traffic on provided port
