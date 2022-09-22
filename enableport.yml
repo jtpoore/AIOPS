@@ -3,6 +3,6 @@
   tasks:
   - name: Enable Firewall Port
     firewalld:
-      port: 161-162/udp
+      port: " {{ port_protocol }} "
       permanent: yes
       state: enabled
