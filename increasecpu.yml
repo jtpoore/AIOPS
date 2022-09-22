@@ -14,6 +14,5 @@
       validate_certs: False
       name: "{{ vm_name }}"
       hardware:
-        num_cpu_cores_per_socket: "{{ cores_per_socket }}"
         num_cpus: "{{ cpu_count }}"
-        hotadd_cpu: "yes"
+
