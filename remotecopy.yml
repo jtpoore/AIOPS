@@ -3,7 +3,7 @@
   tasks:
   - name: Ansible copy files remote to remote
     copy:
-      src: /home/ansible/test.conf
-      dest: /home/ansible/testing
+      src: " {{ src_path }} "
+      dest: " {{ dest_path }} "
       backup: yes
       remote_src: yes
