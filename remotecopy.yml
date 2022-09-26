@@ -4,7 +4,7 @@
   tasks:
   - name: Ansible copy files remote to remote
     copy:
-      src: " {{ src_path }} "
-      dest: " {{ dest_path }} "
+      src: "{{ src_path }}"
+      dest: "{{ dest_path }}"
       backup: yes
       remote_src: yes
