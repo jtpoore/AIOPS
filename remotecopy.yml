@@ -6,5 +6,8 @@
     copy:
       src: " {{ src_path }} "
       dest: " {{ dest_path }} "
+      owner: root
+      group: root
+      mode: 0644
       backup: yes
       remote_src: yes
