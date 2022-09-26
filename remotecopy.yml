@@ -3,10 +3,10 @@
   tasks:
   - name: Ansible copy files remote to remote
     copy:
+      backup: yes
+      remote_src: yes
       src: " {{ src_path }} "
       dest: " {{ dest_path }} "
       owner: root
       group: root
       mode: 0644
-      backup: yes
-      remote_src: yes
