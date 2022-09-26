@@ -2,9 +2,8 @@
 - hosts: " {{ ip_address }} "
   tasks:
   - name: Ansible copy files remote to remote
-    copy:
-      remote_src: yes
+    ansible.builtin.copy:
       src: " {{ src_path }} "
       dest: " {{ dest_path }} "
       backup: yes
-      
+      remote_src: yes
