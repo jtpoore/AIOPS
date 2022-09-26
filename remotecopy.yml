@@ -1,5 +1,6 @@
 ---
 - hosts: " {{ ip_address }} "
+  become: true
   tasks:
   - name: Ansible copy files remote to remote
     copy:
