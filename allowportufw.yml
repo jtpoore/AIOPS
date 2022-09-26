@@ -1,0 +1,8 @@
+---
+- hosts: " {{ ip_address }} "
+  tasks:
+  - name: Enable Firewall Port UGW
+    community.general.ufw:
+      rule: allow
+      port: " {{ port }} "
+      proto: " {{ proto }} "
