@@ -1,0 +1,6 @@
+- hosts: " {{ ip_address }} "
+  tasks:
+  - name: Restart Windows Service
+    ansible.windows.win_service:
+      name: "{{ svc_name }}"
+      state: restarted
