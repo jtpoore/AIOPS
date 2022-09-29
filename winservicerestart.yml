@@ -1,4 +1,5 @@
 - hosts: " {{ ip_address }} "
+  remote_user: administrator
   tasks:
   - name: Restart Windows Service
     ansible.windows.win_service:
