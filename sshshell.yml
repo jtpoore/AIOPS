@@ -2,6 +2,8 @@
   tasks:
   - name: set the default shell to PowerShell
     ansible.windows.win_regedit:
+      ansible_connection: ssh
+      ansible_shell_type: cmd
       path: HKLM:\SOFTWARE\OpenSSH
       name: DefaultShell
       data: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
