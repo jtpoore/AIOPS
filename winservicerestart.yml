@@ -2,7 +2,5 @@
   tasks:
   - name: Restart Windows Service
     ansible.windows.win_service:
-      ansible_connection: ssh
-      ansible_shell_type: powershell
       name: "{{ svc_name }}"
       state: restarted
