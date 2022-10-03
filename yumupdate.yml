@@ -1,5 +1,5 @@
 ---
-- inventory: AAP Hosts
+- hosts: AAP 
   tasks:
   - name: Upgrade all packages
     ansible.builtin.yum:
