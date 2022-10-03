@@ -1,4 +1,5 @@
-name: Upgrade all packages
+- inventory: AAP Hosts
+- name: Upgrade all packages
   ansible.builtin.yum:
     name: '*'
     state: latest
