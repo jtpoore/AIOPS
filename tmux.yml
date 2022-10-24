@@ -1,5 +1,7 @@
-name: Install the latest version of tmux
-hosts: 172.21.142.152
-  ansible.builtin.yum:
-    name: tmux
-    state: latest
+---
+- hosts: 172.21.142.152
+  tasks:
+  - name: Install the latest version of tmux
+    ansible.builtin.yum:
+      name: tmux
+      state: latest
