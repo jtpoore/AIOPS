@@ -9,3 +9,7 @@ collections:
   - name: community.vmware
     version: 2.9.1
     source: https://galaxy.ansible.com
+
+  - name: community.general
+    version: 5.8.0
+    source: https://galaxy.ansible.com
