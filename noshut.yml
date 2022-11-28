@@ -1,7 +1,10 @@
-- name: for idempotency, use full-form commands
-  cisco.ios.ios_config:
-    lines:
-      # - shut
-    - shutdown
-    # parents: int gig1/0/11
-    parents: interface GigabitEthernet1/0/11
+---
+- hosts: 172.16.71.1
+  tasks:
+  - name: No Shut
+    cisco.ios.ios_config:
+      lines:
+        # - noshut
+        - no shutdown
+        # parents: int gig2/0/2
+        parents: interface GigabitEthernet2/0/2
