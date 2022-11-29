@@ -1,11 +1,12 @@
 ---
 - hosts: 172.16.71.1
+
   gather_facts: false
-  
+  connection: local
+
   tasks:
-  - name: Enable Port
-    cisco.ios.ios_interfaces:
-      config:
-      - name: GigabitEthernet2/0/2
-        enabled: true
-  
+   - name: No shut port
+     ios_config:
+       lines:
+         - no shut
+       parents: interface GigabitEthernet2/0/2
