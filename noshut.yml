@@ -1,7 +1,7 @@
 ---
 - hosts: 172.16.71.1
-  gather_facts: false
-
+  ansible_connection: ansible.netcommon.network_cli
+  
   tasks:
    - name: No shut port
      ios_config:
