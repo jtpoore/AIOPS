@@ -1,6 +1,6 @@
 ---
-- gather_facts: no
 - hosts: 172.16.71.1
+- gather_facts: no
   tasks:
   - name: Enable Port
     cisco.ios.ios_interfaces:
