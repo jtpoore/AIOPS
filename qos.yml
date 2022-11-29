@@ -1,0 +1,10 @@
+---
+- hosts: 172.16.71.254
+  gather_facts: false
+  
+  tasks:
+   - name: Adjust QOS setting on port
+     ios_config:
+       lines:
+         - no service-policy output LIMITLAPTOP
+       parents: interface GigabitEthernet0/0
