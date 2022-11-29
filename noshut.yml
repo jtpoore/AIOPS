@@ -1,9 +1,11 @@
 ---
 - hosts: 172.16.71.1
 - gather_facts: no
+- ANSIBLE_DEBUG=1
   tasks:
   - name: Enable Port
     cisco.ios.ios_interfaces:
       config:
       - name: GigabitEthernet2/0/2
         enabled: true
+  
