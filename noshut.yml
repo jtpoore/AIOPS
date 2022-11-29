@@ -1,6 +1,6 @@
 ---
 - hosts: 172.16.71.1
-  connection: ansible.netcommon.network_cli
+  gather_facts: false
   
   tasks:
    - name: No shut port
