@@ -5,7 +5,5 @@
   - name: Enable Port
     cisco.ios.ios_config:
       lines:
-      # - no shut
-    - no shutdown
-    # parents: int gig2/0/2
-    parents: interface GigabitEthernet2/0/2
+      - no shutdown
+      parents: interface GigabitEthernet2/0/2
