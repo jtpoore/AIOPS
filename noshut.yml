@@ -1,7 +1,8 @@
 ---
+- gather_facts: no
 - hosts: 172.16.71.1
   tasks:
-  - name: Merge provided configuration with device configuration
+  - name: Enable Port
     cisco.ios.ios_interfaces:
       config:
       - name: GigabitEthernet2/0/2
