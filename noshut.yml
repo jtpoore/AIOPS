@@ -1,5 +1,6 @@
 ---
 - hosts: 172.16.71.1
+  gather_facts: false
 
   tasks:
    - name: No shut port
