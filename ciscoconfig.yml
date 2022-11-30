@@ -1,0 +1,10 @@
+---
+- hosts: {{ ip_address }}
+  gather_facts: false
+  
+  tasks:
+   - name: Cisco interface config change
+     ios_config:
+       lines:
+         - {{ command }}
+       parents: {{ interface }}
