@@ -7,4 +7,4 @@
      ios_config:
        lines:
          - "{{ command }}"
-       parents: "{{ interface }}"
+       parents: interface "{{interface}}"
