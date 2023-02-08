@@ -6,8 +6,8 @@
 
      tasks:
         - name: show run
-         ios_command:
-           commands:
+         ios_config:
+           lines:
            - show run
            - show version
          register: config
