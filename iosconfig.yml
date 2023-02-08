@@ -6,16 +6,41 @@
 
     tasks: 
     
-      - name: show run
-        ios_command:
-          commands:
-          - show run
-          - show version
-        register: config
+- name: backup cisco ios configuration
+  cisco.ios.config:
+    backup: true
+    backup_options:
+      dir_path: /tmp/
+      filename: "{{ inventory_hostname }}.txt"
+  register: config_output
 
-      - name: save output to local directory
-        copy:
-          content: "{{ config.stdout | replace('\\n', '\n') }}"
-          dest: "/backup/{{ inventory_hostname }}.ios"
-        become: true
-        delegate_to: backup-server
+# This task removes the Current configuration... from the top of IOS routers show run
+- name: remove non config lines - regexp
+  lineinfile:
+    path: "{{ config_output.backup_path }}"
+    line: "Building configuration..."
+    state: absent
+  delegate_to: localhost
+
+    - name: create time stamp for play
+      set_fact:
+        datetime: "{{ lookup('pipe','date +%Y-%m-%d-%H-%M') }}"
+      delegate_to: backup-server
+      delegate_facts: true
+      run_once: true
+
+    - name: Create a directory if it does not exist
+      ansible.builtin.file:
+        path: /backup/
+        state: directory
+      delegate_to: backup-server
+      become: true
+      run_once: true
+
+    - name: save configuration to backup server
+      copy:
+        src: "{{ config_output.backup_path }}"
+        dest: "/backup/{{hostvars['backup-server'].datetime}}/"
+      when: config_output is defined
+      become: true
+      delegate_to: backup-server
