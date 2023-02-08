@@ -1,14 +1,16 @@
 ---
-   - name: capture show output
+- name: capture show output
      hosts: " {{ ip_address }} "
      gather_facts: no
      connection: network_cli
 
      tasks:
         - name: show run
-         ios_config:
-           lines:
+         ios_command:
+           commands:
            - show run
+           - show ip route
+           - show ip eigrp neighbors
            - show version
          register: config
 
