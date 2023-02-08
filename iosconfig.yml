@@ -15,5 +15,5 @@
       - name: save output to local directory
         copy:
           content: "{{ config.stdout | replace('\\n', '\n') }}"
-          dest: "/home/{{ inventory_hostname }}"
+          dest: "/home/config_output.txt"
           remote_src: yes
