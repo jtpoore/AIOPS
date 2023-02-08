@@ -2,6 +2,7 @@
   - name: capture show output
     hosts: " {{ ip_address }} "
     gather_facts: no
+    connection: network_cli
 
     tasks: 
     
