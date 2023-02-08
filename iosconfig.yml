@@ -1,8 +1,7 @@
 ---
 - name: capture show output
-   hosts: 172.16.67.254
-   gather_facts: no
-   connection: network_cli
+  hosts: 172.16.67.254
+  gather_facts: no
 
    tasks: 
     
