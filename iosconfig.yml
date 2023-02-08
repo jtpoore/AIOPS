@@ -16,4 +16,4 @@
       - name: save output to local directory
         copy:
           content: "{{ config.stdout | replace('\\n', '\n') }}"
-          dest: "./configdump/{{ inventory_hostname }}"
+          dest: "/etc/{{ inventory_hostname }}"
