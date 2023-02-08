@@ -13,8 +13,6 @@
         register: config
 
       - name: save output to local directory
-        hosts: 172.21.142.150
-        gather_facts: no
         copy:
           content: "{{ config.stdout | replace('\\n', '\n') }}"
           dest: "/home/{{ inventory_hostname }}"
