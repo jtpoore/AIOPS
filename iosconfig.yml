@@ -23,6 +23,6 @@
       - name: save output to local directory
         copy:
           content: "{{ config.stdout | replace('\\n', '\n') }}"
-          dest: "home/ansible/{{ inventory_hostname }}.ios"
+          dest: "/backup/{{ inventory_hostname }}.ios"
         become: true
         delegate_to: backup-server
