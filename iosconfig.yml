@@ -16,4 +16,3 @@
         copy:
           content: "{{ config.stdout | replace('\\n', '\n') }}"
           dest: "/home/config_output.txt"
- 
