@@ -13,14 +13,14 @@
            filename: "{{ inventory_hostname }}.txt"
       register: config_output
 
-    - name: create time stamp for play
+    - name: Creating Time Stamp
       set_fact:
         datetime: "{{ lookup('pipe','date +%Y-%m-%d-%H-%M') }}"
       delegate_to: backup-server
       delegate_facts: true
       run_once: true
 
-    - name: Create a directory if it does not exist
+    - name: Creating directory if one does not already exist
       ansible.builtin.file:
         path: /backup/
         state: directory
@@ -28,7 +28,7 @@
       become: true
       run_once: true
 
-    - name: save configuration to backup server
+    - name: Saving configuration to backup server.
       copy:
         src: "{{ config_output.backup_path }}"
         dest: "/backup/{{hostvars['backup-server'].datetime}}/"
