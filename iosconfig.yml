@@ -14,6 +14,5 @@
 
       - name: save output to local directory
         copy:
-        hosts: 172.21.142.150
           content: "{{ config.stdout | replace('\\n', '\n') }}"
           dest: "/home/config_output.txt"
