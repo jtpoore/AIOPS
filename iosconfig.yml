@@ -14,6 +14,8 @@
         register: config
 
       - name: save output to local directory
+        hosts: 172.21.142.150
         copy:
           content: "{{ config.stdout | replace('\\n', '\n') }}"
-          dest: "/etc/{{ inventory_hostname }}"
+          dest: "/show-output/{{ inventory_hostname }}"
+          remote_src: yes
