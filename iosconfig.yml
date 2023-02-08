@@ -4,6 +4,14 @@
     gather_facts: no
 
     tasks: 
+    
+    - name: Create a directory if it does not exist
+      ansible.builtin.file:
+        path: /backup/
+        state: directory
+      delegate_to: backup-server
+      become: true
+      run_once: true
 
       - name: show run
         ios_command:
@@ -16,3 +24,5 @@
         copy:
           content: "{{ config.stdout | replace('\\n', '\n') }}"
           dest: "home/ansible/{{ inventory_hostname }}.ios"
+        become: true
+        delegate_to: backup-server
