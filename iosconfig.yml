@@ -14,7 +14,6 @@
         register: config
 
       - name: save output to local directory
-        connection: ssh
         copy:
           content: "{{ config.stdout | replace('\\n', '\n') }}"
-          dest: "172.21.142.150/configdump/{{ inventory_hostname }}"
+          dest: "./configdump/{{ inventory_hostname }}"
