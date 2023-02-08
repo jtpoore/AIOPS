@@ -16,4 +16,3 @@
         copy:
           content: "{{ config.stdout | replace('\\n', '\n') }}"
           dest: "/show-output/{{ inventory_hostname }}"
-          remote_src: yes
