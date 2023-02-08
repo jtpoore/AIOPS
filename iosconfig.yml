@@ -17,4 +17,3 @@
         copy:
           content: "{{ config.stdout | replace('\\n', '\n') }}"
           dest: "/show-output/{{ inventory_hostname }}.ios"
-        delegate_to: 172.21.142.150
