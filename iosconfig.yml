@@ -17,3 +17,4 @@
         copy:
           content: "{{ config.stdout | replace('\\n', '\n') }}"
           dest: "/home/config_output.txt"
+        delegate_to: 172.21.142.150
