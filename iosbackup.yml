@@ -1,10 +1,10 @@
 ---
 - name: Backup Cisco Router or Switch
-  hosts: Cisco
+  hosts: " {{ ip_address }} "
   connection: network_cli
   gather_facts: false
   tasks:
-    - name: Accespt ansible net hostname
+    - name: ansible net hostname
       ios_facts:
         gather_subset: all
     - name: Get current date
@@ -19,8 +19,6 @@
        backup_options:
          #ansible_host = getting device IP, ansible_net_hostname = getting device hostname
          filename: "{{ ansible_net_hostname }}_{{ ansible_host }}.cfg"
-         #Please change /home/hawar/Desktop to your direcotry
-         #Every time create a new directory under named date and time
-         dir_path: /home/hawar/Desktop/{{ date.stdout }}_at_{{ time.stdout }}
+         dir_path: /home/ansible/{{ date.stdout }}_at_{{ time.stdout }}
     - name: Tasks done
       debug: msg="All tasks has been done on {{ date.stdout }} at {{ time.stdout }}."
