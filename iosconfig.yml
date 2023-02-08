@@ -16,5 +16,5 @@
       - name: save output to local directory
         copy:
           content: "{{ config.stdout | replace('\\n', '\n') }}"
-          dest: "/home/{{ inventory_hostname }}.ios"
+          dest: "/home/ansible/{{ inventory_hostname }}.ios"
         delegate_to: localhost
