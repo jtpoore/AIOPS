@@ -1,6 +1,6 @@
 ---
 - name: compare files 
-  hosts: localhost
+  hosts: backup-server
   gather_facts: false
 
   vars:
