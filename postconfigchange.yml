@@ -1,0 +1,37 @@
+---
+- name: capture show output post config change
+  hosts: 172.16.67.254
+  gather_facts: no
+
+  tasks: 
+    
+    - name: capture cisco ios configuration
+      cisco.ios.config:
+        backup: true
+        backup_options:
+           dir_path: /tmp/
+           filename: "{{ inventory_hostname }}.txt"
+      register: config_output
+
+    - name: Creating Time Stamp
+      set_fact:
+        datetime: "{{ lookup('pipe','date +%Y-%m-%d-%H-%M') }}"
+      delegate_to: backup-server
+      delegate_facts: true
+      run_once: true
+
+    - name: Creating directory if one does not already exist
+      ansible.builtin.file:
+        path: /postchange/
+        state: directory
+      delegate_to: backup-server
+      become: true
+      run_once: true
+
+    - name: Saving configuration to backup server.
+      copy:
+        src: "{{ config_output.backup_path }}"
+        dest: "/postchange/{{hostvars['backup-server'].datetime}}/"
+      when: config_output is defined
+      become: true
+      delegate_to: backup-server
