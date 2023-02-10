@@ -31,7 +31,7 @@
     - name: Saving configuration to backup server.
       copy:
         src: "{{ config_output.backup_path }}"
-        dest: "/postchange/{{hostvars['backup-server'].datetime}}/"
+        dest: "/postchange/"
       when: config_output is defined
       become: true
       delegate_to: backup-server
