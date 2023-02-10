@@ -1,0 +1,41 @@
+---
+- name: compare files 
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    dir1: /backup
+    dir2: /postchange
+
+  tasks:
+
+    - name: "Find all files in {{ dir1 }} and {{ dir2 }}"
+      find:
+        paths:
+          - "{{ item }}"
+        get_checksum: true
+      register: search_files
+      loop:
+        - "{{ dir1 }}"
+        - "{{ dir2 }}"
+
+
+    - name: "Compare checksums from {{ dir1 }} to {{ dir2 }}"
+      vars:
+        file2: >-
+          {{
+            search_files.results[1].files |
+            selectattr('path', 'eq', file1.path | replace(dir1, dir2)) |
+            list |
+            first |
+            default({})
+          }}
+      debug:
+        msg: "Files differ."
+      loop: "{{ search_files.results[0].files }}"
+      loop_control:
+        loop_var: file1
+        label: "Comparing {{ file1.path }} to {{ file2.path | default('N/A') }}"
+      when:
+        - file2.path is defined
+        - file1.checksum != file2.checksum
