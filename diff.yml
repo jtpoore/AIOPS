@@ -3,9 +3,19 @@
   gather_facts: false
 
   tasks:
-  
-   - name: diff the standard and running config, piping to output and a file
-     delegate_to: backup-server
-     ansible.builtin.shell:
-       cmd: /usr/bin/diff /backup/172.16.67.254.txt /postchange/172.16.67.254.txt | tee /postchange/diff.txt
-     register: configdiff
+  - name: find differences in files between directories
+    find:
+     paths: /backup/
+     file_type: file
+     recurse: yes
+    register: dir1_files
+  - name: find differences in files between directories
+    find:
+     paths: /postchange/
+     file_type: file
+     recurse: yes
+    register: dir2_files
+  - name: save output of diff in a log file
+    debug:
+     msg: "{{ item.diff }}"
+    with_items: "{{ dir1_files.files|diff(dir2_files.files) }}"
