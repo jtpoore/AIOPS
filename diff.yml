@@ -1,0 +1,11 @@
+- name: compare files 
+  hosts: backup-server
+  gather_facts: false
+
+  tasks:
+  
+   - name: diff the standard and running config, piping to output and a file
+     delegate_to: backup-server
+     ansible.builtin.shell:
+       cmd: /usr/bin/diff /backup/172.16.67.254.txt /postchange/172.16.67.254.txt | tee /postchange/diff.txt
+     register: configdiff
