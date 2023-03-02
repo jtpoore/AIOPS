@@ -15,6 +15,14 @@
       delegate_to: backup-server
       become: true
       run_once: true
+      
+    - name: Creating Time Stamp
+      set_fact:
+        datetime: "{{ lookup('pipe','date +%Y-%m-%d-%H-%M') }}"
+      delegate_to: backup-server
+      delegate_facts: true
+      run_once: true
+      register: timestamp
 
     - name: Backup running config 
       ios_command:
@@ -25,7 +33,7 @@
     - name: Save running config to backup server
       ansible.netcommon.net_put:
         src: "{{ cisco_output.stdout }}"
-        dest: "{{ backup_dir }}/{{ inventory_hostname }}-{{ ansible_date_time.date }}.txt"
+        dest: "{{ backup_dir }}/{{ inventory_hostname }}-{{ timestamp }}.txt"
         transport: scp
         persistent: yes
       delegate_to: "{{ backup_server }}"
