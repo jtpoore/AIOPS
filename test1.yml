@@ -7,17 +7,14 @@
     backup_dir: "/backups/network_configs"
 
   tasks:
-    - name: Check if backup directory exists
-      ansible.netcommon.net_command:
-        cmd: "[ -d {{ backup_dir }} ] && echo 'Directory exists'"
-        register: dir_check
-      delegate_to: "{{ backup_server }}"
-
+  
     - name: Create backup directory if it doesn't exist
-      ansible.netcommon.net_command:
-        cmd: "mkdir -p {{ backup_dir }}"
-      when: "'Directory exists' not in dir_check.stdout"
-      delegate_to: "{{ backup_server }}"
+      ansible.builtin.file:
+        path: /backup/
+        state: directory
+      delegate_to: backup-server
+      become: true
+      run_once: true
 
     - name: Backup running config 
       ios_command:
