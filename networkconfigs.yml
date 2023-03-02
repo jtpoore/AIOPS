@@ -1,0 +1,56 @@
+- name: Pull device configs
+  hosts: network_devices
+  gather_facts: no
+
+  vars:
+    config_dir: "/tmp/configs"
+
+  tasks:
+    - name: Check if config directory exists
+      file:
+        path: "{{ config_dir }}"
+        state: directory
+      register: dir_check
+
+    - name: Fail if config directory doesn't exist
+      fail:
+        msg: "Config directory {{ config_dir }} does not exist"
+      when: not dir_check.stat.exists
+
+    - name: Pull config from Juniper devices
+      juniper_junos_command:
+        commands:
+          - show configuration | display set
+      register: juniper_output
+      when: "'junos' in inventory_hostname"
+
+    - name: Pull config from Cisco devices
+      ios_command:
+        commands:
+          - show running-config
+      register: cisco_output
+      when: "'ios' in inventory_hostname"
+
+    - name: Pull config from Aruba devices
+      arubaoss_command:
+        commands:
+          - show running-config
+      register: aruba_output
+      when: "'aruba' in inventory_hostname"
+
+    - name: Pull config from Arista devices
+      eos_command:
+        commands:
+          - show running-config
+      register: arista_output
+      when: "'eos' in inventory_hostname"
+
+    - name: Write configs to file
+      copy:
+        content: "{{ item.stdout_lines | join('\n') }}"
+        dest: "{{ config_dir }}/{{ inventory_hostname }}.txt"
+      loop:
+        - "{{ juniper_output }}"
+        - "{{ cisco_output }}"
+        - "{{ aruba_output }}"
+        - "{{ arista_output }}"
