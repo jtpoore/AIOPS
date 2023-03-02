@@ -31,9 +31,9 @@
       register: cisco_output
 
     - name: Save running config to backup server
-      ansible.netcommon.net_put:
+      copy:
         src: "{{ cisco_output.stdout }}"
         dest: "{{ backup_dir }}/{{ inventory_hostname }}-{{ timestamp }}.txt"
-        transport: scp
-        persistent: yes
+      when: cisco_output is defined
+      become: true
       delegate_to: "{{ backup_server }}"
