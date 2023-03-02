@@ -1,9 +1,9 @@
 - name: Backup Cisco Configs to Separate Server
-  hosts: cisco_devices
+  hosts: 172.16.67.254
   gather_facts: no
 
   vars:
-    backup_server: "backup.example.com"
+    backup_server: backup-server
     backup_dir: "/backups/network_configs"
 
   tasks:
