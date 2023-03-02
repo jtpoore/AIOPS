@@ -1,39 +1,34 @@
-- name: Backup Cisco Configs to Separate Server
-  hosts: 172.16.67.254
+- name: retrieve network configurations
+  hosts: network
   gather_facts: no
 
-  vars:
-    backup_server: backup-server
-    backup_dir: "/backups/network_configs"
-
   tasks:
-  
-    - name: Create backup directory if it doesn't exist
+    # fail with good error for Automation controller user
+
+    - name: backup configuration
+      include_role:
+        name: "../roles/backup"
+      when: ansible_network_os is defined
+
+    - name: create time stamp for play
+      set_fact:
+        datetime: "{{ lookup('pipe','date +%Y-%m-%d-%H-%M') }}"
+      delegate_to: backup-server
+      delegate_facts: true
+      run_once: true
+
+    - name: Create a directory if it does not exist
       ansible.builtin.file:
         path: /backup/
         state: directory
       delegate_to: backup-server
       become: true
       run_once: true
-      
-    - name: Creating Time Stamp
-      set_fact:
-        datetime: "{{ lookup('pipe','date +%Y-%m-%d-%H-%M') }}"
-      delegate_to: backup-server
-      delegate_facts: true
-      run_once: true
-      register: timestamp
 
-    - name: Backup running config 
-      ios_command:
-        commands:
-          - show running-config
-      register: cisco_output
-
-    - name: Save running config to backup server
+    - name: save configuration to backup server
       copy:
-        src: "{{ cisco_output.stdout }}"
-        dest: "{{ backup_dir }}/{{ inventory_hostname }}-{{ timestamp }}.txt"
-      when: cisco_output is defined
+        src: "{{ config_output.backup_path }}"
+        dest: "/backup/{{hostvars['backup-server'].datetime}}/"
+      when: config_output is defined
       become: true
-      delegate_to: "{{ backup_server }}"
+      delegate_to: backup-server
