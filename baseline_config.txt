@@ -229,7 +229,7 @@ interface GigabitEthernet1/0/18
 !
 interface GigabitEthernet1/0/19
  switchport access vlan 171
- switchport mode access
+ switchport mode trunk
  spanning-tree portfast edge
 !
 interface GigabitEthernet1/0/20
