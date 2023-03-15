@@ -15,4 +15,4 @@
       command: diff {{ baseline_file }} <(echo "{{ current_config.stdout }}")
       register: diff_output
       changed_when: diff_output.stdout != ""
-      delegate_to: backup_server
+      delegate_to: backup-server
