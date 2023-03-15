@@ -18,7 +18,7 @@
       slurp:
         src: "{{ baseline_config }}"
       register: baseline_output
-      delegateto: backup-server
+      delegate_to: backup-server
           
     - name: Compare configs
       set_fact:
