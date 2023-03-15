@@ -20,12 +20,11 @@
       register: baseline_output
       delegate_to: backup-server
           
-    - name: Compare configs
+    - name: Compare current config to baseline config
       set_fact:
-        config_changes: "{{ current_output.stdout[0] | diff(baseline_output.content | b64decode).diff }}"
+        configs_match: "{{ current_config.stdout[0] == baseline_config }}"
 
-    - name: Push baseline config if changes have been made
+    - name: Push baseline config if configs do not match
       ios_config:
-        lines: "{{ lookup('file', baseline_config).splitlines() }}"
-        replace: yes
-      when: config_changes != []
+        lines: "{{ baseline_config.split('\n') }}"
+      when: not configs_match
