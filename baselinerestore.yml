@@ -22,7 +22,7 @@
           
     - name: Compare current config to baseline config
       set_fact:
-        configs_match: "{{ current_config.stdout[0] == baseline_config.content | b64decode }}"
+        configs_match: "{{ current_config.stdout[0] == baseline_config.content | b64decode | join('\n') }}"
 
     - name: Push baseline config if configs do not match
       ios_config:
