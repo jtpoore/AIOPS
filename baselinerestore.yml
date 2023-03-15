@@ -11,7 +11,7 @@
     - name: Retrieve running config from device
       ios_command:
         commands:
-          - show running-config
+          - show running-config | begin version
       register: current_config
 
     - name: Compare current config to baseline config
