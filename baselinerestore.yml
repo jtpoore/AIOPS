@@ -1,28 +1,25 @@
 ---
-- name: Compare IOS config with baseline config
-  hosts: 172.16.94.4
+- name: Pull and compare IOS config with baseline, push baseline if different
+  hosts: cisco_ios_devices
   gather_facts: no
-  
   vars:
-    baseline_config: "/baseline/172.16.94.4.txt"
-    current_config: "show running-config"
-    config_changes: []
-  
+    baseline_config_file: "/path/to/baseline_config.txt"
   tasks:
     - name: Get current IOS config
       ios_command:
-        commands: "{{ current_config | b64decode }}"
-      register: current_output
-    
-    - name: Get baseline IOS config
+        commands:
+          - "show running-config"
+      register: current_config
+
+    - name: Read baseline config from file
       slurp:
-        src: "{{ baseline_config }}"
-      register: baseline_output
+        src: "{{ baseline_config_file }}"
+      register: baseline_config
       delegate_to: backup-server
-          
+
     - name: Run diff between current config and baseline config
       set_fact:
-        config_diff: "{{ current_config.stdout[0] | diff(baseline_config.content ) | join('\n') }}"
+        config_diff: "{{ current_config.stdout[0] | diff(baseline_config.content | b64decode) | join('\n') }}"
 
     - name: Push baseline config if configs differ
       ios_config:
