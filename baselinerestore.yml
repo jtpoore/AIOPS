@@ -16,7 +16,7 @@
 
     - name: Compare current config to baseline config
       set_fact:
-        configs_match: "{{ current_config.stdout_lines[0] == lookup('file', baseline_config_file) }}"
+        configs_match: "{{ current_config.stdout[0] == lookup('file', baseline_config_file) }}"
 
     - name: Configure device with baseline config
       ios_config:
