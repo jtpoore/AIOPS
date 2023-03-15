@@ -1,18 +1,435 @@
 ---
-- name: Pull and compare IOS config with baseline, push baseline if different
-  hosts: 172.16.94.4
+- name: Pull and Compare IOS Config
+  hosts: cisco_ios
   gather_facts: no
+  connection: network_cli
+
   vars:
-    baseline_file: "/baseline/172.16.94.4.txt"
+    baseline_config: |
+!
+version 15.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname IIC-COL-SWI-P04
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging buffered 409600
+enable secret 5 $1$NUjp$eKTwCFLNSkGVDWfAVF1ma0
+!
+username admin privilege 15 secret 5 $1$xFhk$0vAdsx9EbxRLPLcUxrYYW0
+username IICAdmin privilege 15 secret 5 $1$4Xaa$wu3OEvSQgKMyaLiN1P6Lr/
+username fcatlas privilege 3 password 7 113E1C09141D06095578787069
+aaa new-model
+!
+!
+aaa authentication login default group radius local
+!
+!
+!
+!
+!
+!
+aaa session-id common
+switch 1 provision ws-c3750x-24
+system mtu routing 1500
+!
+!
+!
+!
+no ip cef optimize neighbor resolution
+!
+!
+!
+no ip domain-lookup
+ip domain-name iic.csra.nat
+ip name-server 172.16.66.110
+vtp domain cscfed
+vtp mode transparent
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-227689088
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-227689088
+ revocation-check none
+ rsakeypair TP-self-signed-227689088
+!
+!
+crypto pki certificate chain TP-self-signed-227689088
+ certificate self-signed 01
+  30820229 30820192 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  30312E30 2C060355 04031325 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 32323736 38393038 38301E17 0D313130 33333030 31323930 
+  325A170D 32303031 30313030 30303030 5A303031 2E302C06 03550403 1325494F 
+  532D5365 6C662D53 69676E65 642D4365 72746966 69636174 652D3232 37363839 
+  30383830 819F300D 06092A86 4886F70D 01010105 0003818D 00308189 02818100 
+  F1998660 4DDE3B86 09BD3233 71C51D29 EFE65E0E 3EA533FF 73E0B06C 887EEE02 
+  79CEB1B1 510044EF F9D0C711 EC891A1F 02D7C169 A7E00B7B 7573D16D 78E972E7 
+  2CA2BC73 2AE32808 92EF78AC 9358A5C7 B4E4970F 69209534 DA413EC1 749E78A8 
+  57BDF4C7 BEEFCA27 9E263BF5 D8C36BD4 7A034B3D 2DE3E289 3C42A2C5 988A31FF 
+  02030100 01A35330 51300F06 03551D13 0101FF04 05300301 01FF301F 0603551D 
+  23041830 16801465 94BC9E82 C940A4C9 42900903 BFAAFDC2 C6EB5E30 1D060355 
+  1D0E0416 04146594 BC9E82C9 40A4C942 900903BF AAFDC2C6 EB5E300D 06092A86 
+  4886F70D 01010505 00038181 0053A353 F0AD0235 A12AA59F 2380D5E8 E48F4B2A 
+  385B1AC6 087EF522 7EE076D7 2E5853EF 169FC4AB 7BF34FD4 B1BCFE12 D1A2403A 
+  046C2084 65467719 8A16648D E205F385 9AC29EF0 411E430A BF66A383 7F10276B 
+  78E85819 8F6677EB FBDAC814 B15E3DDD A288DFBF 01BDB47B 1B78EDA6 22218D44 
+  F5AE385C EF7729A4 0F0D7A01 68
+  	quit
+!
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+network-policy profile 1
+!
+!
+!
+!
+!
+vlan internal allocation policy ascending
+!
+vlan 164,171-172,194 
+!
+lldp run
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ switchport trunk allowed vlan 1,164,171,194
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Port-channel2
+ switchport trunk allowed vlan 1,164,171,194
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Port-channel3
+ switchport trunk allowed vlan 1,164,171,194
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface FastEthernet0
+ no ip address
+ no ip route-cache
+!
+interface GigabitEthernet1/0/1
+ switchport access vlan 171
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/2
+ switchport access vlan 171
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/3
+ switchport access vlan 171
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/4
+ switchport access vlan 171
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/5
+ switchport access vlan 171
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/6
+ switchport access vlan 171
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/7
+ switchport access vlan 171
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/8
+ switchport access vlan 171
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/9
+ switchport access vlan 171
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/10
+ switchport access vlan 171
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/11
+ switchport access vlan 171
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/12
+ switchport access vlan 171
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/13
+ description IIC-COL-SWI-P01 2/0/19
+ switchport trunk allowed vlan 1,164,171,194
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode on
+!
+interface GigabitEthernet1/0/14
+ description IIC-COL-SWI-P01 2/0/20
+ switchport trunk allowed vlan 1,164,171,194
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode on
+!
+interface GigabitEthernet1/0/15
+ description IIC-COL-SWI-P02 2/0/11
+ switchport trunk allowed vlan 1,164,171,194
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 2 mode on
+!
+interface GigabitEthernet1/0/16
+ description IIC-COL-SWI-P02 2/0/12
+ switchport trunk allowed vlan 1,164,171,194
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 2 mode on
+!
+interface GigabitEthernet1/0/17
+ description IIC-COL-SWI-P03 1/0/27
+ switchport trunk allowed vlan 1,164,171,194
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 3 mode on
+!
+interface GigabitEthernet1/0/18
+ description IIC-COL-SWI-P03 1/0/28
+ switchport trunk allowed vlan 1,164,171,194
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 3 mode on
+!
+interface GigabitEthernet1/0/19
+ switchport access vlan 171
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/20
+ switchport access vlan 171
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/21
+ switchport access vlan 171
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/22
+ switchport access vlan 171
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/23
+ switchport access vlan 194
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/24
+ switchport trunk allowed vlan 1,164,171,194
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface GigabitEthernet1/1/1
+ switchport access vlan 171
+!
+interface GigabitEthernet1/1/2
+ switchport access vlan 172
+ switchport mode access
+!
+interface GigabitEthernet1/1/3
+ switchport access vlan 171
+!
+interface GigabitEthernet1/1/4
+ no switchport
+ ip address 172.16.202.2 255.255.255.0
+ no ip route-cache
+!
+interface TenGigabitEthernet1/1/1
+ description Leaf-108 Eth 1/1
+ switchport access vlan 172
+ switchport mode access
+!
+interface TenGigabitEthernet1/1/2
+ description IIC-COL-SWI-P02 Ten 2/1/2
+ switchport trunk allowed vlan 1,164,171,172,194
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Vlan1
+ no ip address
+ no ip route-cache
+!
+interface Vlan171
+ ip address 172.16.71.4 255.255.255.0
+ no ip route-cache
+!
+interface Vlan194
+ ip address 172.16.94.4 255.255.255.0
+ no ip route-cache
+!
+ip forward-protocol nd
+!
+!
+ip http server
+ip http secure-server
+ip ssh version 2
+!
+!
+kron occurrence Backup at 23:00 Sun recurring
+ policy-list Backup
+!
+kron policy-list Backup
+ cli copy run tftp://172.16.71.223/SWI-P04.txt
+!
+logging trap warnings
+logging host 172.16.68.76 transport tcp port 514
+!
+!
+snmp-server user IIC IIC v3 
+snmp-server group IIC v3 noauth 
+snmp-server community public RO
+snmp-server community iiclab RO
+snmp-server community innovation RO
+snmp-server community slebrch RO
+snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
+snmp-server enable traps flowmon
+snmp-server enable traps transceiver all
+snmp-server enable traps call-home message-send-fail server-fail
+snmp-server enable traps eigrp
+snmp-server enable traps tty
+snmp-server enable traps ospf state-change
+snmp-server enable traps ospf errors
+snmp-server enable traps ospf retransmit
+snmp-server enable traps ospf lsa
+snmp-server enable traps ospf cisco-specific state-change nssa-trans-change
+snmp-server enable traps ospf cisco-specific state-change shamlink interface
+snmp-server enable traps ospf cisco-specific state-change shamlink neighbor
+snmp-server enable traps ospf cisco-specific errors
+snmp-server enable traps ospf cisco-specific retransmit
+snmp-server enable traps ospf cisco-specific lsa
+snmp-server enable traps license
+snmp-server enable traps auth-framework sec-violation
+snmp-server enable traps bgp
+snmp-server enable traps cef resource-failure peer-state-change peer-fib-state-change inconsistency
+snmp-server enable traps config-copy
+snmp-server enable traps config
+snmp-server enable traps config-ctid
+snmp-server enable traps energywise
+snmp-server enable traps fru-ctrl
+snmp-server enable traps entity
+snmp-server enable traps event-manager
+snmp-server enable traps hsrp
+snmp-server enable traps ipmulticast
+snmp-server enable traps ike policy add
+snmp-server enable traps ike policy delete
+snmp-server enable traps ike tunnel start
+snmp-server enable traps ike tunnel stop
+snmp-server enable traps ipsec cryptomap add
+snmp-server enable traps ipsec cryptomap delete
+snmp-server enable traps ipsec cryptomap attach
+snmp-server enable traps ipsec cryptomap detach
+snmp-server enable traps ipsec tunnel start
+snmp-server enable traps ipsec tunnel stop
+snmp-server enable traps ipsec too-many-sas
+snmp-server enable traps isis
+snmp-server enable traps msdp
+snmp-server enable traps power-ethernet police
+snmp-server enable traps pim neighbor-change rp-mapping-change invalid-pim-message
+snmp-server enable traps cpu threshold
+snmp-server enable traps rep
+snmp-server enable traps ipsla
+snmp-server enable traps bridge newroot topologychange
+snmp-server enable traps stpx inconsistency root-inconsistency loop-inconsistency
+snmp-server enable traps syslog
+snmp-server enable traps vtp
+snmp-server enable traps vlancreate
+snmp-server enable traps vlandelete
+snmp-server enable traps flash insertion removal
+snmp-server enable traps port-security
+snmp-server enable traps envmon fan shutdown supply temperature status
+snmp-server enable traps stackwise
+snmp-server enable traps alarms informational
+snmp-server enable traps bulkstat collection transfer
+snmp-server enable traps vrfmib vrf-up vrf-down vnet-trunk-up vnet-trunk-down
+snmp-server enable traps errdisable
+snmp-server enable traps mac-notification change move threshold
+snmp-server enable traps vlan-membership
+snmp-server host 172.16.56.60 version 2c innovation udp-port 161 
+snmp-server manager
+!
+radius-server dead-criteria time 1 tries 5
+radius-server deadtime 1
+!
+radius server IIC-AZE-DC-V01
+ address ipv4 172.16.255.132 auth-port 1645 acct-port 1646
+ key 7 1067483A2C1914192C55787870
+!
+radius server IIC-AZE-DC-V02
+ address ipv4 172.16.255.133 auth-port 1645 acct-port 1646
+ key 7 123044343B050A160A7A767B67
+!
+!
+line con 0
+line vty 0 4
+ length 0
+ transport input ssh
+line vty 5 15
+ transport input ssh
+!
+ntp allow mode control 7
+ntp server 172.16.66.110
+ntp server 172.16.94.111
+!
+end
+
   tasks:
-    - name: Get current IOS config
+    - name: Retrieve running config from device
       ios_command:
         commands:
-          - "show running-config"
+          - show running-config
       register: current_config
 
-    - name: Compare current config with baseline
-      command: diff {{ baseline_file }} <(echo "{{ current_config.stdout }}")
-      register: diff_output
-      changed_when: diff_output.stdout != ""
-      delegate_to: backup-server
+    - name: Compare current config to baseline config
+      set_fact:
+        configs_match: "{{ current_config.stdout[0] == baseline_config }}"
+
+    - name: Configure device with baseline config
+      ios_config:
+        lines: "{{ baseline_config.split('\n') }}"
+      when: not configs_match
