@@ -11,7 +11,7 @@
   tasks:
     - name: Get current IOS config
       ios_command:
-        commands: "{{ current_config }}"
+        commands: "{{ current_config | b64decode }}"
       register: current_output
     
     - name: Get baseline IOS config
@@ -22,7 +22,7 @@
           
     - name: Run diff between current config and baseline config
       set_fact:
-        config_diff: "{{ current_config.stdout[0] | diff(baseline_config.content | b64decode) | join('\n') }}"
+        config_diff: "{{ current_config.stdout[0] | diff(baseline_config.content ) | join('\n') }}"
 
     - name: Push baseline config if configs differ
       ios_config:
