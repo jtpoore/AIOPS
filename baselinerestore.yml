@@ -11,17 +11,7 @@
           - "show running-config"
       register: current_config
 
-    - name: Read baseline config from file
-      slurp:
-        src: "{{ baseline_config_file }}"
-      register: baseline_config
-      delegate_to: backup-server
-
-    - name: Run diff between current config and baseline config
-      set_fact:
-        config_diff: "{{ current_config.stdout[0] | diff(baseline_config.content | b64decode) | join('\n') }}"
-
-    - name: Push baseline config if configs differ
-      ios_config:
-        lines: "{{ lookup('file', baseline_config_file).split('\n') }}"
-      when: config_diff != ""
+    - name: Compare current config with baseline
+      command: diff {{ baseline_file }} <(echo "{{ current_config.stdout }}")
+      register: diff_output
+      changed_when: diff_output.stdout != ""
