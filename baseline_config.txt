@@ -15,6 +15,7 @@ enable secret 5 $1$NUjp$eKTwCFLNSkGVDWfAVF1ma0
 !
 username admin privilege 15 secret 5 $1$xFhk$0vAdsx9EbxRLPLcUxrYYW0
 username IICAdmin privilege 15 secret 5 $1$4Xaa$wu3OEvSQgKMyaLiN1P6Lr/
+username jsp_test privilege 15 secret 5 $1$4Xaa$wu3OEvSQgKMyaLiN1P6Lr/
 username fcatlas privilege 3 password 7 113E1C09141D06095578787069
 aaa new-model
 !
