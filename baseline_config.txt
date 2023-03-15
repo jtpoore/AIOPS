@@ -1,7 +1,3 @@
-
-Current configuration : 11203 bytes
-!
-! Last configuration change at 00:01:20 UTC Mon Jan 2 2006
 !
 version 15.2
 no service pad
