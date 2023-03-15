@@ -20,11 +20,11 @@
       register: baseline_output
       delegate_to: backup-server
           
-    - name: Compare current config to baseline config
+    - name: Run diff between current config and baseline config
       set_fact:
-        configs_match: "{{ current_config.stdout[0] == baseline_config.content | b64decode | join('\n') }}"
+        config_diff: "{{ current_config.stdout[0] | diff(baseline_config.content | b64decode) | join('\n') }}"
 
-    - name: Push baseline config if configs do not match
+    - name: Push baseline config if configs differ
       ios_config:
-        lines: "{{ baseline_config.split('\n') }}"
-      when: not configs_match
+        lines: "{{ lookup('file', baseline_config_file).split('\n') }}"
+      when: config_diff != ""
