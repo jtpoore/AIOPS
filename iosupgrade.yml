@@ -22,7 +22,7 @@
     - name: Copy IOS image to device
       ios_command:
         commands:
-          - "copy tftp://192.168.1.1/{{ ios_image }} flash:"
+          - "copy tftp://xxx.xxx.xxx.xxx/{{ ios_image }} flash:"
 
     - name: Upgrade IOS
       ios_command:
@@ -49,7 +49,7 @@
 
     - name: Verify config after upgrade
       ios_command:
-        commands: "show running-config"
+        commands: "show running-config | begin version"
       register: upgraded_config
 
     # Step 4: Rollback if configs differ
