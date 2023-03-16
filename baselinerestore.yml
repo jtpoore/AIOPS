@@ -20,5 +20,5 @@
 
     - name: Configure device with baseline config
       ios_config:
-        lines: "{{ lookup('file', baseline_config_file.split('\n') }}"
+        lines: "{{ lookup('file', baseline_config_file).split('\n') }}"
       when: not configs_match
