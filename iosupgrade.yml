@@ -1,0 +1,71 @@
+- name: Backup IOS config, upgrade IOS, and verify config
+  hosts: cisco_devices
+  gather_facts: no
+
+  vars:
+    ios_image: "ios file"
+    backup_dir: "/home/user/ios_backups"
+
+  tasks:
+    # Step 1: Backup IOS config
+    - name: Backup IOS config
+      ios_command:
+        commands: "show running-config | begin version"
+      register: current_config
+
+    - name: Save current config to backup file
+      copy:
+        content: "{{ current_config.stdout }}"
+        dest: "{{ backup_dir }}/backup.cfg"
+
+    # Step 2: Upgrade IOS
+    - name: Copy IOS image to device
+      ios_command:
+        commands:
+          - "copy tftp://192.168.1.1/{{ ios_image }} flash:"
+
+    - name: Upgrade IOS
+      ios_command:
+        commands:
+          - "conf t"
+          - "boot system flash:/{{ ios_image }}"
+          - "end"
+          - "write memory"
+          - "reload in 5"
+      delay: 10
+      register: upgrade_output
+
+    # Step 3: Verify config
+    - name: Wait for device to reboot
+      wait_for:
+        host: "{{ inventory_hostname }}"
+        port: 22
+        delay: 10
+        timeout: 300
+        state: started
+
+    - name: Wait for device to be reachable
+      wait_for_connection:
+
+    - name: Verify config after upgrade
+      ios_command:
+        commands: "show running-config"
+      register: upgraded_config
+
+    # Step 4: Rollback if configs differ
+    - name: Compare config to backup
+      fail:
+        msg: "Configurations differ - rolling back"
+      when: current_config.stdout != upgraded_config.stdout
+
+    - name: Roll back to previous IOS version
+      ios_command:
+        commands:
+          - "conf t"
+          - "no boot system"
+          - "boot system flash:/{{ current_config.stdout.splitlines()[0].split()[-1] }}"
+          - "end"
+          - "write memory"
+          - "reload in 5"
+      delay: 10
+      when: current_config.stdout != upgraded_config.stdout
