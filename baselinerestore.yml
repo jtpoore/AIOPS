@@ -1,6 +1,6 @@
 ---
 - name: Pull and Compare IOS Config
-  hosts: 172.16.94.4
+  hosts: ios_devices
   gather_facts: no
   connection: network_cli
 
