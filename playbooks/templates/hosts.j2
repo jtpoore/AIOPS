@@ -1,0 +1,11 @@
+Begin /etc/hosts (network card version)    
+::1 localhost ipv6-localhost ipv6-loopback  
+127.0.0.1 localhost.localdomain  
+127.0.0.1 localhost  
+127.0.0.1 {{ inventory_hostname }}
+
+# End /etc/hosts (network card version)  
+
+{% for hostname, vars in hostvars.items() %}
+{{ vars["ansible_host"] }}  {{ hostname }}.corp.local {{ hostname }}
+{% endfor %}
