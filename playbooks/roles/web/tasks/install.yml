@@ -1,6 +1,0 @@
----
-- shell: 'tdnf -y install nginx'
-
-#- name: Wait 30 seconds
-#  ansible.builtin.pause:
-#    seconds: 30
