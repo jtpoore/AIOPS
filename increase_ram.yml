@@ -1,0 +1,15 @@
+#
+# This playbook increases memory for a VM
+#
+- name: Increase RAM
+  hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: "Increase RAM"
+    community.vmware.vmware_guest:
+      hostname: "172.16.64.140"
+      validate_certs: False
+      name: "{{ vm_name }}"
+      hardware:
+        hodadd_memory: true
+        memory_mb: "{{ mem_mb }}"
